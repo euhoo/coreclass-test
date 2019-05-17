@@ -22,7 +22,7 @@ export default (router, io) => {
     .get('/channels', (ctx) => {
       ctx.body = state.channels;
       ctx.status = 301;
-      io.emit('newChannel', data);
+      // io.emit('newChannel', data);
     });
   return router
     .get('root', '/', (ctx) => {
