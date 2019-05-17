@@ -9,10 +9,9 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 const str = 'test';
-axios.get('/', str)
-  .then(data => console.log(data));
+axios.get('/api/v1/data/', str);
 const socket = io();
 
 socket.on('data', ( data ) => {
-  console.log('here');
+  console.log(data);
 });

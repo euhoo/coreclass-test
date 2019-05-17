@@ -20,11 +20,12 @@ export default (router, io) => {
 
   const apiRouter = new Router();
   apiRouter
-    .get('/', (ctx) => {
-      io.emit('data', ctx);
+    .get('/data', (ctx) => {
+      ctx.body = '';
+      io.emit('data','qweqw');
     });
   return router
-    .get('root', '/', (ctx) => {
+    .get('/', (ctx) => {
       ctx.render('index', { gon: state });
     })
     .use('/api/v1', apiRouter.routes(), apiRouter.allowedMethods());
