@@ -1,6 +1,9 @@
 
 import Router from 'koa-router';
-import findData from '../src/findData';
+import url from 'url';
+import querystring from 'querystring';
+import findData from '../src/utils/findData';
+
 
 export default (router, io) => {
   const store = {
@@ -22,10 +25,13 @@ export default (router, io) => {
   const apiRouter = new Router();
   apiRouter
     .get('/data', (ctx) => {
-      //console.log(ctx.request.body);
       const { body } = ctx.request;
-      console.log(ctx.request.url);
-      ctx.body = body;//findData(store, ctx.request.body);
+      const { query } = url.parse(ctx.request.url);
+      const { id, value, name, page, perPage } = querystring.parse(query);
+      //console.log(id, value, name, page, perPage);
+      //findData(store, ctx.request.body);
+
+      ctx.body = { id, value, name, page, perPage };//findData(store, ctx.request.body);
     });
   return router
     .get('/', (ctx) => {

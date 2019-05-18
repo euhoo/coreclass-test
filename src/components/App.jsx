@@ -1,5 +1,5 @@
 import React from 'react';
-import axios from 'axios';
+import request from '../utils/request';
 
 export default class App extends React.Component {
 state = {
@@ -19,29 +19,14 @@ componentDidMount() {
   this.setState({ store });
 }
 
-    idChange = (e) => {
+    idChange = async (e) => {
       const {
         value, name, page, perPage,
       } = this.state;
       const id = e.target.value;
       this.setState({ id });
-      const data = {
-        id, value, name, page, perPage,
-      };
+      const data = await request({ id, value, name, page, perPage });
       console.log(data);
-      const request = JSON.stringify(data);
-      console.log(request);
-
-      axios.get('/api/v1/data/', {
-        params: {
-          id,
-          value,
-          name,
-          page,
-          perPage,
-        },
-      })
-        .then(response => console.log(response));
     }
 
     render() {
