@@ -57,7 +57,6 @@ export default (router) => {
 
       const minElIndex = (newPage - 1) * newPerPage;
       const maxElIndex = newPage * newPerPage;
-      console.log(minElIndex, maxElIndex);
       const result = filteredByMaxValue.filter((item, index) => (index >= minElIndex && index < maxElIndex));
       ctx.body = { store: result, page: newPage, perPage: newPerPage };
     });
