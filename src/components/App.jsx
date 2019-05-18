@@ -112,7 +112,6 @@ componentDidMount() {
       const {
         store, page, perPage, id, name, minValue, maxValue,
       } = this.state;
-
       return (
         <div className="container">
           <div className="row">
