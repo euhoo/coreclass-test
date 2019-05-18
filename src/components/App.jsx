@@ -42,7 +42,8 @@ componentDidMount() {
       });
       const { store } = response.data;
       const [min, max] = findMinMax(store);
-      this.setState({ ...response.data, minValue: min, maxValue: max });
+      console.log(response.data);
+      this.setState({ ...response.data });
     }
 
     onSort = method => async () => {
@@ -53,7 +54,7 @@ componentDidMount() {
       };
       switch (method) {
         case 'id':
-          sortObj.now = sortObj.was === 'idMaxToMin' ? 'idMinToMax' : 'idMaxToMin';
+          sortObj.now = sortObj.was === 'idMinToMax' ? 'idMaxToMin' : 'idMinToMax';
           break;
         case 'name':
           sortObj.now = sortObj.was === 'nameZ-A' ? 'nameA-Z' : 'nameZ-A';
@@ -65,7 +66,6 @@ componentDidMount() {
           break;
       }
       await this.setState({ sort: sortObj.now });
-      console.log(this.state.sort);
       const response = await request(this.state);
       this.setState({ ...response.data });
     }
