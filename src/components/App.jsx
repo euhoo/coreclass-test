@@ -3,15 +3,12 @@ import request from '../utils/request';
 
 export default class App extends React.Component {
 state = {
-  store: {
-    byId: {},
-    allIds: [],
-  },
+  store: [],
   id: '',
-  value: 'w',
-  name: 'e',
-  page: 'r',
-  perPage: 'w',
+  value: '',
+  name: '',
+  page: '',
+  perPage: '',
 }
 
 componentDidMount() {
@@ -25,13 +22,15 @@ componentDidMount() {
       } = this.state;
       const id = e.target.value;
       this.setState({ id });
-      const data = await request({ id, value, name, page, perPage });
-      console.log(data);
+      const response = await request({
+        id, value, name, page, perPage,
+      });
+      console.log(response.data);
     }
 
     render() {
       const { store } = this.state;
-      const { allIds, byId } = store;
+      console.log(store);
       return (
         <div className="container">
           <div className="row">
@@ -46,8 +45,8 @@ componentDidMount() {
                   </tr>
                 </thead>
                 <tbody>
-                  { allIds.map((item) => {
-                    const { id, name, value } = byId[item];
+                  { store.map((item) => {
+                    const { id, name, value } = item;
                     return (
                       <tr key={id}>
                         <th scope="row">{id}</th>

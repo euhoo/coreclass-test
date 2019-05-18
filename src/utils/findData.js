@@ -1,4 +1,6 @@
 export default (store, response) => {
-    const parsed = response;//JSON.parse(response.config.data);
-    console.log(parsed);
-}
+    // const { id, value, name, page, perPage } = response;
+    // const filtered = store.filter(item => item === +id);
+  const parsed = response;
+  return parsed.data;
+};

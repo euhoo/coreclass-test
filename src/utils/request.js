@@ -12,5 +12,5 @@ export default async ({
       perPage,
     },
   });
-  return request.data;
+  return request;
 };
