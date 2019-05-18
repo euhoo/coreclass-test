@@ -80,7 +80,6 @@ componentDidMount() {
       const response = await request({
         id, minValue, maxValue, name, page, perPage,
       });
-      console.log(response.data.perPage);
       this.setState({ store: response.data.store, perPage: response.data.perPage });
     }
 
@@ -93,11 +92,27 @@ componentDidMount() {
       const response = await request({
         id, minValue, maxValue, name, page, perPage,
       });
-      this.setState({ store: response.data.store, page: +response.data.page });
+      this.setState({ store: response.data.store, page: response.data.page });
+    }
+
+    onReset = async () => {
+      const response = await request({
+        id: '', minValue: 1, maxValue: 10, name: '', page: 1, perPage: 10,
+      });
+      const {
+        store, id, name, page, perPage,
+      } = response.data;
+      const [min, max] = findMinMax(store);
+      await this.setState({
+        store, page, id, minValue: min, maxValue: max, name, perPage,
+      });
     }
 
     render() {
-      const { store, page, perPage } = this.state;
+      const {
+        store, page, perPage, id, name, minValue, maxValue,
+      } = this.state;
+
       return (
         <div className="container">
           <div className="row">
@@ -113,6 +128,7 @@ componentDidMount() {
                 </thead>
                 <tbody>
                   { store.map((item) => {
+                    // eslint-disable-next-line no-shadow
                     const { id, name, value } = item;
                     return (
                       <tr key={id}>
@@ -126,25 +142,22 @@ componentDidMount() {
               </table>
             </div>
             <div className="col-12 col-sm-3">
-              Sort & filter
+              Filter
+
+
               <div>
-                {/*
-              не могу здесь использовать тип "number" для input ID,name & value потому,что мне придется
-              или по ходу выполнения программы менять тип переменной(что очень плохо) или в фильтр будут
-              попадать начальные цифровые(нулевые) значения каких-то полей и тогда фильтр будет работать
-              не правильно
-              */}
                 Id:
-                <input className="form-control w-50" type="text" placeholder="id" onChange={this.idChange} />
+                <input className="form-control w-50" type="number" placeholder="id" value={id} onChange={this.idChange} />
                 Name:
-                <input className="form-control" type="text" placeholder="name" onChange={this.nameChange} />
+                <input className="form-control" type="text" placeholder="name" value={name} onChange={this.nameChange} />
                 Value:
-                <input className="form-control w-50" type="number" placeholder="min" onChange={this.minValueChange} />
-                <input className="form-control w-50" type="number" placeholder="max" onChange={this.maxValueChange} />
+                <input className="form-control w-50" type="number" placeholder="min" value={minValue} onChange={this.minValueChange} />
+                <input className="form-control w-50" type="number" placeholder="max" value={maxValue} onChange={this.maxValueChange} />
                 Pages:
-                <input className="form-control w-50" type="number" placeholder="page" min="1" onChange={this.pageChange} />
+                <input className="form-control w-50" type="number" placeholder="page" value={page} min="1" onChange={this.pageChange} />
                 Elements per page:
                 <input className="form-control w-50" type="number" placeholder={`max ${store.length}`} min="1" value={perPage} onChange={this.perPageChange} />
+                <button type="button" className="btn btn-secondary btn-sm" onClick={this.onReset}>Reset</button>
               </div>
             </div>
           </div>
