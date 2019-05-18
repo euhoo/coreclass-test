@@ -80,7 +80,7 @@ componentDidMount() {
       const response = await request({
         id, minValue, maxValue, name, page, perPage,
       });
-      this.setState({ store: response.data.store, perPage: response.data.perPage });
+      this.setState({ store: response.data.store, perPage: +response.data.perPage });
     }
 
     pageChange = async ({ target }) => {
@@ -92,12 +92,11 @@ componentDidMount() {
       const response = await request({
         id, minValue, maxValue, name, page, perPage,
       });
-      this.setState({ store: response.data.store, page: response.data.page });
+      this.setState({ store: response.data.store, page: +response.data.page });
     }
 
     render() {
-      const { store, page, perPage } = this.state;
-      const countOfPages = store.length / perPage < 1 ? 1 : store.length / perPage;
+      const { store, page } = this.state;
       return (
         <div className="container">
           <div className="row">
@@ -142,7 +141,7 @@ componentDidMount() {
                 <input className="form-control w-50" type="number" placeholder="min" onChange={this.minValueChange} />
                 <input className="form-control w-50" type="number" placeholder="max" onChange={this.maxValueChange} />
                 Pages:
-                <input className="form-control w-50" type="number" placeholder={`max ${countOfPages}`} min="1" onChange={this.pageChange} />
+                <input className="form-control w-50" type="number" placeholder="page" min="1" onChange={this.pageChange} />
                 Elements per page:
                 <input className="form-control w-50" type="number" placeholder={`max ${store.length}`} min="1" onChange={this.perPageChange} />
               </div>
