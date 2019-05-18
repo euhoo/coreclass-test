@@ -24,7 +24,7 @@ export default (router) => {
     .get('/data', (ctx) => {
       const { query } = url.parse(ctx.request.url);
       const {
-        id, value, name, page, perPage,
+        id, minValue, maxValue, name, page, perPage,
       } = querystring.parse(query);
       console.log(id.length);
 
@@ -36,7 +36,30 @@ export default (router) => {
 
       /* при фильтрации по value убрал различие между строчными и заглавными буквами */
       const filteredByName = name.length === 0 ? filteredById : filteredById.filter(i => i.name.toLowerCase().includes(name.toLowerCase()));
-      ctx.body = filteredByName;
+
+      const filteredByMinValue = minValue.length === 0 ? filteredByName : filteredByName.filter(i => i.value >= minValue);
+      const filteredByMaxValue = maxValue.length === 0 ? filteredByMinValue : filteredByMinValue.filter(i => i.value <= maxValue);
+      const findNewPerPage = (oldPerPage, currentStore) => {
+        if (oldPerPage.length === 0) return currentStore.length;
+        if (oldPerPage <= 0 || oldPerPage > currentStore.length) return currentStore.length;
+        return oldPerPage;
+      };
+      const newPerPage = findNewPerPage(perPage, filteredByMaxValue);
+      const numberOfPages = Math.ceil(filteredByMaxValue.length / newPerPage);
+      const findNewPage = (oldPage) => {
+        if (oldPage.length === 0) return 1;
+        if (oldPage <= 0 || oldPage > numberOfPages) return 1;
+        return oldPage;
+      };
+      
+      const newPage = findNewPage(page, filteredByMaxValue);
+      
+
+      const minElIndex = (newPage - 1) * newPerPage;
+      const maxElIndex = newPage * newPerPage;
+      console.log(minElIndex, maxElIndex);
+      const result = filteredByMaxValue.filter((item, index) => (index >= minElIndex && index < maxElIndex));
+      ctx.body = { store: result, page: newPage, perPage: newPerPage };
     });
   return router
     .get('/', (ctx) => {

@@ -1,12 +1,13 @@
 import axios from 'axios';
 
 export default async ({
-  id, value, name, page, perPage,
+  id, minValue, maxValue, name, page, perPage,
 }) => {
   const request = await axios.get('/api/v1/data/', {
     params: {
       id,
-      value,
+      minValue,
+      maxValue,
       name,
       page,
       perPage,
