@@ -23,89 +23,25 @@ componentDidMount() {
   this.setState({ store, minValue, maxValue });
 }
 
-    idChange = async ({ target }) => {
-      const {
-        minValue, maxValue, name, page, perPage,
-      } = this.state;
-      const id = target.value;
-      // this.setState({ id });
-      const response = await request({
-        id, minValue, maxValue, name, page, perPage,
-      });
-      this.setState({ store: response.data.store, id });
+    filter = str => async ({ target }) => {
+      await this.setState({ [str]: target.value });
+      const response = await request(this.state);
+      this.setState({ store: response.data.store });
     }
 
-    nameChange = async ({ target }) => {
-      const {
-        minValue, maxValue, id, page, perPage,
-      } = this.state;
-      const name = target.value;
-      // this.setState({ name });
-      const response = await request({
-        id, minValue, maxValue, name, page, perPage,
-      });
-      this.setState({ store: response.data.store, name });
-    }
-
-    minValueChange = async ({ target }) => {
-      const {
-        id, maxValue, name, page, perPage,
-      } = this.state;
-      const minValue = target.value;
-      // this.setState({ minValue });
-      const response = await request({
-        id, minValue, maxValue, name, page, perPage,
-      });
-      this.setState({ store: response.data.store, minValue });
-    }
-
-    maxValueChange = async ({ target }) => {
-      const {
-        id, minValue, name, page, perPage,
-      } = this.state;
-      const maxValue = target.value;
-      // this.setState({ minValue });
-      const response = await request({
-        id, minValue, maxValue, name, page, perPage,
-      });
-      this.setState({ store: response.data.store, maxValue });
-    }
-
-    perPageChange = async ({ target }) => {
-      const {
-        id, minValue, maxValue, name, page,
-      } = this.state;
-      const perPage = target.value;
-      // this.setState({ minValue });
-      const response = await request({
-        id, minValue, maxValue, name, page, perPage,
-      });
-      this.setState({ store: response.data.store, perPage: response.data.perPage });
-    }
-
-    pageChange = async ({ target }) => {
-      const {
-        id, minValue, maxValue, name, perPage,
-      } = this.state;
-      const page = target.value;
-      // this.setState({ minValue });
-      const response = await request({
-        id, minValue, maxValue, name, page, perPage,
-      });
-      this.setState({ store: response.data.store, page: response.data.page });
+    paging = str => async ({ target }) => {
+      await this.setState({ [str]: target.value });
+      const response = await request(this.state);
+      this.setState({ store: response.data.store, [str]: response.data.perPage });
     }
 
     onReset = async () => {
       const response = await request({
         id: '', minValue: 1, maxValue: 10, name: '', page: 1, perPage: 10,
       });
-      const {
-        store, id, name, page, perPage,
-      } = response.data;
+      const { store } = response.data;
       const [min, max] = findMinMax(store);
-      await this.setState({
-        store, page, id, minValue: min, maxValue: max, name, perPage,
-      });
+      this.setState({ ...response.data, minValue: min, maxValue: max });
     }
 
     render() {
@@ -146,16 +82,16 @@ componentDidMount() {
 
               <div>
                 Id:
-                <input className="form-control w-50" type="number" placeholder="id" value={id} onChange={this.idChange} />
+                <input className="form-control w-50" type="number" placeholder="id" value={id} onChange={this.filter('id')} />
                 Name:
-                <input className="form-control" type="text" placeholder="name" value={name} onChange={this.nameChange} />
+                <input className="form-control" type="text" placeholder="name" value={name} onChange={this.filter('name')} />
                 Value:
-                <input className="form-control w-50" type="number" placeholder="min" value={minValue} onChange={this.minValueChange} />
-                <input className="form-control w-50" type="number" placeholder="max" value={maxValue} onChange={this.maxValueChange} />
+                <input className="form-control w-50" type="number" placeholder="min" value={minValue} onChange={this.filter('minValue')} />
+                <input className="form-control w-50" type="number" placeholder="max" value={maxValue} onChange={this.filter('maxValue')} />
                 Pages:
-                <input className="form-control w-50" type="number" placeholder="page" value={page} min="1" onChange={this.pageChange} />
+                <input className="form-control w-50" type="number" placeholder="page" value={page} min="1" onChange={this.paging('page')} />
                 Elements per page:
-                <input className="form-control w-50" type="number" placeholder={`max ${store.length}`} min="1" value={perPage} onChange={this.perPageChange} />
+                <input className="form-control w-50" type="number" placeholder={`max ${store.length}`} min="1" value={perPage} onChange={this.paging('perPage')} />
                 <button type="button" className="btn btn-secondary btn-sm" onClick={this.onReset}>Reset</button>
               </div>
             </div>
