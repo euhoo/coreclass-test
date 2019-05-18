@@ -11,6 +11,7 @@ state = {
   name: '',
   page: 1,
   perPage: 10,
+  sort: 'idMinToMax',
 }
 
 componentDidMount() {
@@ -32,16 +33,41 @@ componentDidMount() {
     paging = str => async ({ target }) => {
       await this.setState({ [str]: target.value });
       const response = await request(this.state);
-      this.setState({ store: response.data.store, [str]: response.data.perPage });
+      this.setState({ store: response.data.store, [str]: response.data[str] });
     }
 
     onReset = async () => {
       const response = await request({
-        id: '', minValue: 1, maxValue: 10, name: '', page: 1, perPage: 10,
+        id: '', minValue: 1, maxValue: 10, name: '', page: 1, perPage: 10, sort: 'idToUp',
       });
       const { store } = response.data;
       const [min, max] = findMinMax(store);
       this.setState({ ...response.data, minValue: min, maxValue: max });
+    }
+
+    onSort = method => async () => {
+      const { sort } = this.state;
+      const sortObj = {
+        was: sort,
+        now: '',
+      };
+      switch (method) {
+        case 'id':
+          sortObj.now = sortObj.was === 'idMaxToMin' ? 'idMinToMax' : 'idMaxToMin';
+          break;
+        case 'name':
+          sortObj.now = sortObj.was === 'nameZ-A' ? 'nameA-Z' : 'nameZ-A';
+          break;
+        case 'value':
+          sortObj.now = sortObj.was === 'maxToMin' ? 'minToMax' : 'maxToMin';
+          break;
+        default:
+          break;
+      }
+      await this.setState({ sort: sortObj.now });
+      console.log(this.state.sort);
+      const response = await request(this.state);
+      this.setState({ ...response.data });
     }
 
     render() {
@@ -56,9 +82,19 @@ componentDidMount() {
               <table className="table table-sm">
                 <thead>
                   <tr>
-                    <th>id</th>
-                    <th>name</th>
-                    <th>value</th>
+                    <th>
+                      Id
+                      <button type="button" className="btn btn-light btn-sm" onClick={this.onSort('id')}>sort</button>
+                    </th>
+                    <th>
+                      Name
+                      <button type="button" className="btn btn-light btn-sm" onClick={this.onSort('name')}>sort</button>
+                      
+                    </th>
+                    <th>
+                      Value
+                      <button type="button" className="btn btn-light btn-sm" onClick={this.onSort('value')}>sort</button>
+                    </th>
                   </tr>
                 </thead>
                 <tbody>

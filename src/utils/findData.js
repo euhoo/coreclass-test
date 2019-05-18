@@ -1,12 +1,13 @@
 import querystring from 'querystring';
+import sorted from './sorted';
 
 export default (store, query) => {
   const {
-    id, minValue, maxValue, name, page, perPage,
+    id, minValue, maxValue, name, page, perPage, sort,
   } = querystring.parse(query);
 
 
-  const filteredById = id.length === 0 ? store : store.filter(i => i.id === +id);
+  const filteredById = (!id) ? store : store.filter(i => i.id === +id);
 
   const filteredByName = name.length === 0 ? filteredById : filteredById.filter(i => i.name.toLowerCase().includes(name.toLowerCase()));
 
@@ -30,8 +31,9 @@ export default (store, query) => {
 
   const minElIndex = (newPage - 1) * newPerPage;
   const maxElIndex = newPage * newPerPage;
-  const result = filteredByMaxValue.filter((_i, index) => (index >= minElIndex && index < maxElIndex));
+  const totalFiltered = filteredByMaxValue.filter((_i, index) => (index >= minElIndex && index < maxElIndex));
+  const result = sorted(totalFiltered, sort);
   return {
-    store: result, page: newPage, perPage: newPerPage, name, id, minValue, maxValue,
+    store: result, page: newPage, perPage: newPerPage, name, id, minValue, maxValue, sort,
   };
 };
