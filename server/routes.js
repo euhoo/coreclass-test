@@ -26,10 +26,17 @@ export default (router) => {
       const {
         id, value, name, page, perPage,
       } = querystring.parse(query);
-      const response = findData(store, {
-        id, value, name, page, perPage,
-      });
-      ctx.body = response;
+      console.log(id.length);
+
+      /*
+      id приходит как строка. я не хочу использовать ==,
+      поэтому для сравнения привожу String к Number
+      */
+      const filteredById = id.length === 0 ? store : store.filter(i => i.id === +id);
+
+      /* при фильтрации по value убрал различие между строчными и заглавными буквами */
+      const filteredByName = name.length === 0 ? filteredById : filteredById.filter(i => i.name.toLowerCase().includes(name.toLowerCase()));
+      ctx.body = filteredByName;
     });
   return router
     .get('/', (ctx) => {
