@@ -1,8 +1,9 @@
 
 import Router from 'koa-router';
+import findData from '../src/findData';
 
 export default (router, io) => {
-  const state = {
+  const store = {
     byId: {
       1: { id: 1, name: 'AAA', value: 1.02 },
       2: { id: 2, name: 'AAB', value: 1.5 },
@@ -21,12 +22,14 @@ export default (router, io) => {
   const apiRouter = new Router();
   apiRouter
     .get('/data', (ctx) => {
-      ctx.body = '';
-      io.emit('data','qweqw');
+      //console.log(ctx.request.body);
+      const { body } = ctx.request;
+      console.log(ctx.request.url);
+      ctx.body = body;//findData(store, ctx.request.body);
     });
   return router
     .get('/', (ctx) => {
-      ctx.render('index', { gon: state });
+      ctx.render('index', { gon: store });
     })
     .use('/api/v1', apiRouter.routes(), apiRouter.allowedMethods());
 };
