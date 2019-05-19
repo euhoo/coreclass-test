@@ -28,17 +28,18 @@ export default (store, query) => {
 
   const filteredByMaxValue = maxValue.length === 0 ? filteredByMinValue
     : filteredByMinValue.filter(i => i.value <= maxValue);
+    const sorted = makeSort(filteredByMaxValue, sort);
 
   // Пагинация
 
-  const newPerPage = findPerPage(perPage, filteredByMaxValue);
-  const numberOfPages = Math.ceil(filteredByMaxValue.length / newPerPage);
+  const newPerPage = findPerPage(perPage, sorted);
+  const numberOfPages = Math.ceil(sorted.length / newPerPage);
 
   const newPage = findPage(page, numberOfPages);
   const minElIndex = (newPage - 1) * newPerPage;
   const maxElIndex = newPage * newPerPage;
 
-  const totalFiltered = filteredByMaxValue
+  const totalFiltered = sorted
     .filter((_i, index) => (index >= minElIndex && index < maxElIndex));
 
   // Сортировка
@@ -47,7 +48,7 @@ export default (store, query) => {
 
   // Возвращаю результат
   return {
-    store: result,
+    store: totalFiltered,
     page: newPage,
     perPage: newPerPage,
     name,

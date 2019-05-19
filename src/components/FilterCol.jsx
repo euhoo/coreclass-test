@@ -16,7 +16,7 @@ const FilterCol = (props) => {
         Value:
         <input className="form-control w-50" type="number" placeholder="min" value={minValue} onChange={makeFilter('minValue')} />
         <input className="form-control w-50" type="number" placeholder="max" value={maxValue} onChange={makeFilter('maxValue')} />
-        Pages:
+        Page:
         <input className="form-control w-50" type="number" placeholder="page" value={page} min="1" onChange={makeFilter('page')} />
         Elements per page:
         <input className="form-control w-50" type="number" placeholder={`max ${store.length}`} min="1" value={perPage} onChange={makeFilter('perPage')} />
