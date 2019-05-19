@@ -1,4 +1,6 @@
 # coreclass-test  
+[![Build Status](https://travis-ci.org/euhoo/coreclass-test.svg?branch=master)](https://travis-ci.org/euhoo/coreclass-test)
+[![Maintainability](https://api.codeclimate.com/v1/badges/ee1b92d40dce2631f295/maintainability)](https://codeclimate.com/github/euhoo/coreclass-test/maintainability)  
 https://coreclass.herokuapp.com/  
 Задача: В браузере отрисовать таблицу с данными сервера Требования: Фронт запрашивает rest-сервис сервера, получает данные для отображения. Rest-сервис может быть написан на любом языке (предпочтительно Java+Spring). Реализовать сортировку+пейджинг+фильтр, результат (один лист данных) должен готовится на стороне сервера, таблица на фронте - отображает.
 
