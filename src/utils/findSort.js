@@ -1,20 +1,12 @@
 export default (sort, method) => {
-  const sortObj = {
-    was: sort,
-    now: '',
-  };
   switch (method) {
     case 'id':
-      sortObj.now = sortObj.was === 'idMinToMax' ? 'idMaxToMin' : 'idMinToMax';
-      break;
+      return sort === 'idMinToMax' ? 'idMaxToMin' : 'idMinToMax';
     case 'name':
-      sortObj.now = sortObj.was === 'nameZ-A' ? 'nameA-Z' : 'nameZ-A';
-      break;
+      return sort === 'nameZ-A' ? 'nameA-Z' : 'nameZ-A';
     case 'value':
-      sortObj.now = sortObj.was === 'maxToMin' ? 'minToMax' : 'maxToMin';
-      break;
+      return sort === 'maxToMin' ? 'minToMax' : 'maxToMin';
     default:
-      break;
+      return sort;
   }
-  return sortObj.now;
 };

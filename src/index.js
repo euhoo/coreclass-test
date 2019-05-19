@@ -7,6 +7,7 @@ import app from './components';
 if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
-/* server add store to window.gon when app init */
+/* при загрузке server добавляет store в window.gon */
+
 const store = gon;
 app(store);
