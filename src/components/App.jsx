@@ -41,7 +41,7 @@ export default class App extends React.Component {
   makeSort = method => async () => {
     const { sort } = this.state;
     const res = findSort(sort, method);
-    await this.setState({ sort: res });
+    await this.setState({ sort: res, page: '1' });
     const response = await request(this.state);
     this.setState({ ...response.data });
   }

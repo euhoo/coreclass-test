@@ -28,7 +28,10 @@ export default (store, query) => {
 
   const filteredByMaxValue = maxValue.length === 0 ? filteredByMinValue
     : filteredByMinValue.filter(i => i.value <= maxValue);
-    const sorted = makeSort(filteredByMaxValue, sort);
+
+  // Сортировка
+
+  const sorted = makeSort(filteredByMaxValue, sort);
 
   // Пагинация
 
@@ -42,11 +45,8 @@ export default (store, query) => {
   const totalFiltered = sorted
     .filter((_i, index) => (index >= minElIndex && index < maxElIndex));
 
-  // Сортировка
-
-  const result = makeSort(totalFiltered, sort);
-
   // Возвращаю результат
+
   return {
     store: totalFiltered,
     page: newPage,
