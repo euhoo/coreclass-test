@@ -22,7 +22,9 @@ export default (router) => {
   apiRouter
     .get('/data', (ctx) => {
       const { query } = url.parse(ctx.request.url);
-      ctx.body = makeData(store, query);
+      const data = makeData(store, query);
+      const response = JSON.stringify(data);
+      ctx.body = response;
     });
   return router
     .get('/', (ctx) => {
