@@ -1,7 +1,6 @@
 
 import Router from 'koa-router';
 import url from 'url';
-import querystring from 'querystring';
 import findData from '../src/utils/findData';
 
 
