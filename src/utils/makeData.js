@@ -1,5 +1,5 @@
 import querystring from 'querystring';
-import sorted from './sorted';
+import makeSort from './makeSort';
 import findPerPage from './findPerPage';
 import findPage from './findPage';
 
@@ -16,7 +16,7 @@ export default (store, query) => {
     id, minValue, maxValue, name, page, perPage, sort,
   } = querystring.parse(query);
 
-  // Filter
+  // Фильтрация
 
   const filteredById = (!id) ? store : store.filter(i => i.id === +id);
 
@@ -43,7 +43,7 @@ export default (store, query) => {
 
   // Сортировка
 
-  const result = sorted(totalFiltered, sort);
+  const result = makeSort(totalFiltered, sort);
 
   // Возвращаю результат
   return {

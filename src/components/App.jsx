@@ -23,10 +23,10 @@ export default class App extends React.Component {
     const response = await request(this.state);
     /*
      У меня был выбор или ограничить в инпуте количество страниц максимально возможным
-      или после последней страницы выводить пустые страницы, а для показателя per page просто ничего не менять,
-      если показатель per page больше,чем количество элементов.
-      Выбрал пекрвый вариант, поэтому в строчке 31 я дополниительно устанавливаю в state возвращенное
-      значение из запроса.
+      или после последней страницы выводить пустые страницы, а для показателя per page
+      просто ничего не менять, если показатель per page больше,чем количество элементов.
+      Выбрал пекрвый вариант, поэтому в строчке 31 я дополниительно устанавливаю в state
+      возвращенное значение из запроса.
     */
     this.setState({ store: response.data.store, [str]: response.data[str] });
   }
@@ -52,9 +52,7 @@ export default class App extends React.Component {
       <div className="container">
         <div className="row">
           <Table store={store} page={page} makeSort={this.makeSort} />
-          
-            <FilterCol makeFilter={this.makeFilter} makeReset={this.makeReset} state={this.state} />
-          
+          <FilterCol makeFilter={this.makeFilter} makeReset={this.makeReset} state={this.state} />
         </div>
       </div>
     );

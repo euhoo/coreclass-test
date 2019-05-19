@@ -1,7 +1,7 @@
 
 import Router from 'koa-router';
 import url from 'url';
-import findData from '../src/utils/findData';
+import makeData from '../src/utils/makeData';
 
 
 export default (router) => {
@@ -22,7 +22,7 @@ export default (router) => {
   apiRouter
     .get('/data', (ctx) => {
       const { query } = url.parse(ctx.request.url);
-      ctx.body = findData(store, query);
+      ctx.body = makeData(store, query);
     });
   return router
     .get('/', (ctx) => {
